@@ -1,0 +1,121 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-image: url('images/Admin/wallpaper.jpg');
+    background-size: cover;
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+
+/* Form container styling */
+
+.form-container {
+    background: rgba(255, 255, 255, 0.567);
+    padding: 3rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 1s ease-in-out;
+    text-align: center;
+    width: 80%;
+    max-width: 600px;
+    margin: auto;
+}
+
+.form-container h1 {
+    margin-bottom: 2rem;
+    font-size: 3rem;
+    color: #333;
+}
+
+
+/* Input field styling */
+
+.input-field {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.input-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #666;
+}
+
+.input-field input {
+    width: 100%;
+    padding: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
+}
+
+.input-field input:focus {
+    border-color: var(--orange);
+    box-shadow: 0 0 8px rgba(255, 165, 0, 0.3);
+}
+
+
+/* Button styling */
+
+.btn {
+    padding: .8rem 2.5rem;
+    text-transform: uppercase;
+    background: var(--orange);
+    color: #fff;
+    border-radius: 10px;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s ease-in-out;
+    font-size: 1rem;
+}
+
+.btn:hover {
+    background: #ff8c00;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Message styling */
+
+.message {
+    background: #ffdddd;
+    color: #d8000c;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+.message i {
+    position: absolute;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+
+/* Fade-in animation */
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Savoy Cinema</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        
+        header {
+            background-color: #111;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        header h1 {
+            margin: 0;
+            font-size: 2em;
+        }
+        
+        nav {
+            background-color: #333;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        nav a {
+            display: block;
+            color: #fff;
+            text-align: center;
+            padding: 14px 16px;
+            text-decoration: none;
+            font-size: 1em;
+        }
+        
+        nav a:hover {
+            background-color: #575757;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 20px;
+        }
+        
+        .image-section,
+        .info-section {
+            flex: 1;
+            margin: 10px;
+        }
+        
+        .image-section img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        
+        .info-section h2 {
+            font-size: 2em;
+            margin: 10px 0;
+        }
+        
+        .info-section p {
+            font-size: 1em;
+            line-height: 1.5;
+        }
+        
+        .features {
+            margin-top: 20px;
+        }
+        
+        .features img {
+            width: 50px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        
+        .gallery {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        
+        .gallery img {
+            width: 150px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        
+        .movies {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        
+        .movie {
+            background-color: #222;
+            margin: 10px;
+            padding: 10px;
+            width: 220px;
+            text-align: center;
+            border-radius: 5px;
+        }
+        
+        .movie img {
+            width: 100%;
+            border-radius: 5px;
+        }
+        
+        .movie h3 {
+            margin: 10px 0;
+        }
+        
+        .movie p {
+            margin: 5px 0;
+        }
+        
+        .movie .buttons a {
+            display: block;
+            background-color: orange;
+            color: white;
+            text-decoration: none;
+            padding: 10px;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        
+        .movie .buttons a:hover {
+            background-color: darkorange;
+        }
+        
+        .card-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: white;
+        }
+        
+        .card {
+            position: relative;
+            background-color: #333;
+            border-radius: 10px;
+            margin: 10px;
+            padding: 40px;
+            text-align: center;
+            width: 250px;
+            height: 150px;
+        }
+        
+        .card h1 {
+            font-size: 2em;
+            margin: 0 0 10px;
+        }
+        
+        .card p {
+            margin: 10px 0;
+        }
+        
+        .card button {
+            background-color: orange;
+            border: none;
+            border-radius: 5px;
+            color: white;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 1em;
+        }
+        
+        .dolby {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .dolby img {
+            width: 30px;
+            height: 30px;
+            margin-left: 10px;
+        }
+        
+        .label {
+            position: absolute;
+            top: -50px;
+            right: 10px;
+            font-size: 5em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>Savoy Cinema </h1>
+    </header>
+    <nav>
+        <a href="index.html">Home</a>
+        <a href="movies.php">Movie</a>
+        <a href="Cinema.html">Cinema</a>
+        <a href="book.html">Book Seat</a>
+        <a href="contact.html">Contact Us</a>
+    </nav>
+    <div class="container">
+        <div class="image-section">
+            <img src="images/CINEMA/IMG1.jpg" alt="Cinema Image">
+        </div>
+        <div class="info-section">
+            <h2>Savoy Cinema</h2>
+            <p>
+                Savoy Cinema, located in Colombo, Sri Lanka, is one of the most iconic and popular movie theaters in the country. Owned and operated by EAP Films and Theaters, Savoy Cinema is renowned for its rich history and modern cinematic experience. The cinema features
+                state-of-the-art facilities, including advanced sound systems and high-quality digital projection, offering an immersive viewing experience for moviegoers.
+            </p>
+
+            <p>The cinema is known for screening a wide range of films, from Hollywood blockbusters to popular Bollywood movies and local Sinhala films. With comfortable seating and a welcoming ambiance, Savoy Cinema has become a favorite spot for both locals
+                and tourists to enjoy the latest releases.</p>
+            <p>Savoy Cinema also hosts special events, premieres, and film festivals, making it a significant cultural hub in Colombo's entertainment landscape. Its convenient location, excellent service, and commitment to providing a superior cinematic
+                experience ensure that Savoy Cinema remains a beloved destination for film enthusiasts in Sri Lanka.</p>
+        </div>
+    </div>
+
+    <div class="card-container">
+        <div class="card" style="background-color: #8B0000;">
+            <div class="label">C1</div>
+            <h1>Savoy Cinema</h1>
+            <p>4K Digital Projection</p>
+            <button>View Showtimes</button>
+            <div class="dolby"></div>
+        </div>
+        <div class="card" style="background-color: #8B4513;">
+            <div class="label">C2</div>
+            <h1>Savoy Cinema</h1>
+            <p>2K Laser Projection</p>
+            <button>View Showtimes</button>
+            <div class="dolby"></div>
+        </div>
+        <div class="card" style="background-color: #555555;">
+            <div class="label">C3</div>
+            <h1>Savoy Cinema</h1>
+            <p>2K Laser Projection</p>
+            <button>View Showtimes</button>
+            <div class="dolby"></div>
+        </div>
+    </div>
+</body>
+
+</html>

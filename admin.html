@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Manage Movies</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-size: cover;
+            background-image: url('images/Admin/contactuspage.png');
+        }
+        
+        .container {
+            max-width: 600px;
+            width: 100%;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: #ffffffd9;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        form {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        form label {
+            width: 100%;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        form input,
+        form textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin: 5px 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        form button {
+            width: calc(50% - 20px);
+            padding: 10px;
+            margin: 10px;
+            background-color: #5f635f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        
+        form button:hover {
+            background-color: #534441;
+        }
+        
+        form .action-buttons {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+        }
+        
+        form .action-buttons button {
+            width: 48%;
+        }
+        
+        nav {
+            background-color: #33333300;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        
+        nav a:hover {
+            color: #facd00;
+        }
+        
+        @media (max-width: 768px) {
+            form input,
+            form textarea {
+                width: calc(100% - 20px);
+            }
+            form button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <nav>
+        <a href="admin_panel.php">Home</a>
+        <a href="admin_booking.php">Bookings</a>
+        <a href="admin.html">Movies</a>
+        <a href="admin_user.php">Users</a>
+        <a href="admin_message.php">Messages</a>
+        <a href="index.html">Theater </a>
+    </nav>
+    <div class="container">
+        <h1 style="text-align: center;">Admin - Manage Movies</h1>
+        <form action="manage_movie.php" method="post" enctype="multipart/form-data">
+            <input type="hidden" name="id" id="movieId">
+
+            <label for="title">Title:</label>
+            <input type="text" name="title" id="title" required>
+
+            <label for="description">Description:</label>
+            <textarea name="description" id="description" rows="5" required></textarea>
+
+            <label for="genre">Genre:</label>
+            <input type="text" name="genre" id="genre" required>
+
+            <label for="release_date">Release Date:</label>
+            <input type="date" name="release_date" id="release_date" required>
+
+            <label for="image">Image:</label>
+            <input type="file" name="image" id="image" accept="image/*" required>
+
+            <div class="action-buttons">
+                <button type="submit" name="action" value="insert">Insert Movie</button>
+                <button type="button" onclick="window.location.href='edit_movie.php'" style="background-color: #5b5d5f;">Edit</button>
+
+            </div>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,6 @@
+<!---------Admin----------->
+Admin email: hashan@gmail.com
+Password: hashan
+
+<!-----------Database Name------->
+savoy_movie_theater
