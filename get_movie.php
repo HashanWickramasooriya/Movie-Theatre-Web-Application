@@ -1,28 +1,25 @@
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "savoy_movie_theater";
+require_once 'connection.php';
+require_once 'includes/functions.php';
 
+header('Content-Type: application/json');
 
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+if (empty($_SESSION['admin_name'])) {
+    http_response_code(403);
+    echo json_encode(['error' => 'Not authorized.']);
+    exit;
 }
 
-$id = intval($_GET['id']);
-
-$sql = "SELECT * FROM movies WHERE id=$id";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    $movie = $result->fetch_assoc();
-    echo json_encode($movie);
-} else {
+$id = filter_input(INPUT_GET, 'id', FILTER_VALIDATE_INT);
+if (!$id) {
     echo json_encode([]);
+    exit;
 }
 
-$conn->close();
-?>
+$stmt = $conn->prepare('SELECT * FROM movies WHERE id = ?');
+$stmt->bind_param('i', $id);
+$stmt->execute();
+$movie = $stmt->get_result()->fetch_assoc();
+$stmt->close();
+
+echo json_encode($movie ?: []);

@@ -17,7 +17,7 @@
                 triggerPoint = 80;
             headerHeight();
             jQuery(window).resize(headerHeight);
-            jQuery(window).in('scroll', function() {
+            jQuery(window).on('scroll', function() {
                 yOffset = jQuery(window).scrollTop();
 
                 if (yOffset >= triggerPoint) {

@@ -119,3 +119,36 @@ body {
         transform: translateY(0);
     }
 }
+
+
+/* Brand link back to the main site from auth pages */
+
+.auth-brand-link {
+    position: absolute;
+    top: 1.5rem;
+    left: 1.5rem;
+    color: #fff;
+    font-weight: bold;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    font-size: 1.1rem;
+    z-index: 2;
+}
+
+.auth-brand-link:hover,
+.auth-brand-link:focus-visible {
+    color: var(--orange);
+}
+
+.message--success {
+    background: #d9f2df;
+    color: #1f7a3d;
+}
+
+@media (max-width: 480px) {
+    .auth-brand-link {
+        top: 1rem;
+        left: 1rem;
+        font-size: 1rem;
+    }
+}

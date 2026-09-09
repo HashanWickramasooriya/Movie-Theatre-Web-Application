@@ -1,89 +1,64 @@
 <?php
+require_once 'connection.php';
+require_once 'includes/functions.php';
 
-    include 'connection.php';
-    session_start();
-    $admin_id = $_SESSION['admin_name'];
+if (empty($_SESSION['admin_name'])) {
+    header('Location: login.php');
+    exit;
+}
 
-    if (!isset($admin_id)) {
-        header('location:login.php');
-    }
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header('Location: login.php');
+    exit;
+}
 
-    if (isset($_POST['logout'])) {
-       session_destroy();
-       header('location:login.php');
-    }
+$num_of_bookings = $conn->query('SELECT COUNT(*) AS n FROM `bookings`')->fetch_assoc()['n'];
+$num_of_movies = $conn->query('SELECT COUNT(*) AS n FROM `movies`')->fetch_assoc()['n'];
+$num_of_regular_users = $conn->query("SELECT COUNT(*) AS n FROM `users` WHERE user_type = 'user'")->fetch_assoc()['n'];
+$num_of_admins = $conn->query("SELECT COUNT(*) AS n FROM `users` WHERE user_type = 'admin'")->fetch_assoc()['n'];
+$num_of_users_total = $conn->query('SELECT COUNT(*) AS n FROM `users`')->fetch_assoc()['n'];
+$num_of_messages = $conn->query('SELECT COUNT(*) AS n FROM `message`')->fetch_assoc()['n'];
 ?>
-<style type="text/css">
-    <?php 
-        include 'admin_style.css';
-    ?>
-</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Savoy Cinema</title>
+    <link rel="icon" href="images/logo1.png">
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
-    <title>admin panel</title>
+    <link rel="stylesheet" type="text/css" href="admin_style.css">
 </head>
 <body>
     <?php include 'admin_header.php'; ?>
     <div class="line4"></div>
     <section class="dashboard">
         <div class="box-container">
-            
-
-        <div class="box">
-                <?php 
-                  
-                    $select_bookings = mysqli_query($conn, "SELECT * FROM `bookings`") or die('query failed');
-                    $num_of_bookings = mysqli_num_rows($select_bookings);
-                ?>
-                <h3><?php echo  $num_of_bookings; ?></h3>
+            <div class="box">
+                <h3><?php echo (int) $num_of_bookings; ?></h3>
                 <p>Bookings</p>
             </div>
             <div class="box">
-                <?php 
-                  
-                    $select_movies = mysqli_query($conn, "SELECT * FROM `movies`") or die('query failed');
-                    $num_of_movies  = mysqli_num_rows($select_movies );
-                ?>
-                <h3><?php echo  $num_of_movies ; ?></h3>
-                <p>movies added</p>
+                <h3><?php echo (int) $num_of_movies; ?></h3>
+                <p>Movies added</p>
             </div>
             <div class="box">
-                <?php 
-                  
-                    $select_users = mysqli_query($conn, "SELECT * FROM `users` WHERE user_type = 'user'") or die('query failed');
-                    $num_of_users  = mysqli_num_rows($select_users );
-                ?>
-                <h3><?php echo  $num_of_users; ?></h3>
-                <p>total normal users</p>
+                <h3><?php echo (int) $num_of_regular_users; ?></h3>
+                <p>Total normal users</p>
             </div>
             <div class="box">
-                <?php 
-                  
-                    $select_admin = mysqli_query($conn, "SELECT * FROM `users` WHERE user_type = 'admin'") or die('query failed');
-                    $num_of_admin  = mysqli_num_rows($select_admin );
-                ?>
-                <h3><?php echo  $num_of_admin; ?></h3>
-                <p>total admin</p>
+                <h3><?php echo (int) $num_of_admins; ?></h3>
+                <p>Total admins</p>
             </div>
             <div class="box">
-                <?php 
-                    $select_users = mysqli_query($conn, "SELECT * FROM `users`") or die('query failed');
-                    $num_of_users   = mysqli_num_rows($select_users  );
-                ?>
-                <h3><?php echo  $num_of_users ; ?></h3>
-                <p>total registered users </p>
+                <h3><?php echo (int) $num_of_users_total; ?></h3>
+                <p>Total registered users</p>
             </div>
             <div class="box">
-                <?php 
-                    $select_message = mysqli_query($conn, "SELECT * FROM `message`") or die('query failed');
-                    $num_of_message  = mysqli_num_rows($select_message );
-                ?>
-                <h3><?php echo  $num_of_message; ?></h3>
-                <p>new messages</p>
+                <h3><?php echo (int) $num_of_messages; ?></h3>
+                <p>New messages</p>
             </div>
         </div>
     </section>

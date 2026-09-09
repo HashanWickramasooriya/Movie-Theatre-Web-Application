@@ -122,7 +122,7 @@ input[type=submit] {
 /*---------form container---------*/
 
 .form-container {
-    background-image: url('img/wallpaper.jpg');
+    background-image: url('images/Admin/wallpaper.jpg');
     width: 100%;
     min-height: 100vh;
     padding: 4rem 0;
@@ -416,5 +416,123 @@ header .icons i:hover {
     }
     .banner .detail {
         left: 10%;
+    }
+}
+
+
+/*---------messages---------*/
+
+.message--success {
+    background: #1f7a3d;
+}
+
+
+/*---------movie admin---------*/
+
+.movie-admin {
+    max-width: 1100px;
+    margin: 2rem auto;
+    padding: 0 1.5rem 3rem;
+}
+
+.movie-admin-form {
+    background: #fff;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: var(--box-shadow);
+    margin-bottom: 2rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 0.5rem 1.5rem;
+}
+
+.form-grid label {
+    display: block;
+    font-weight: bold;
+    text-transform: none;
+    margin-bottom: 0.25rem;
+}
+
+.form-grid input,
+.form-grid select,
+.form-grid textarea {
+    width: 100%;
+    margin: 0 0 0.75rem;
+}
+
+.form-grid-full {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.form-actions button {
+    width: auto;
+    background: var(--orange);
+    border: none;
+    padding: 0.75rem 2rem;
+}
+
+.form-actions #cancel-edit {
+    background: #ddd;
+}
+
+.movie-admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.movie-admin-table th,
+.movie-admin-table td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    vertical-align: middle;
+}
+
+.movie-admin-table th {
+    background: #111;
+    color: #fff;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+}
+
+.movie-admin-table img {
+    border-radius: 4px;
+    display: block;
+}
+
+.movie-admin-table a,
+.movie-admin-table button.edit-movie-btn {
+    color: var(--orange);
+    background: none;
+    border: none;
+    width: auto;
+    margin: 0 0.5rem 0 0;
+    padding: 0;
+    font: inherit;
+    cursor: pointer;
+}
+
+.movie-admin-table a:hover,
+.movie-admin-table button.edit-movie-btn:hover {
+    text-decoration: underline;
+}
+
+@media (max-width: 767px) {
+    .movie-admin-table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
     }
 }

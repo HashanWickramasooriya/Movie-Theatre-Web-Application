@@ -21,6 +21,9 @@ userBtn.addEventListener('click', function() {
 
 const closeBtn = document.querySelector('#close-form');
 
-closeBtn.addEventListener('click', () => {
-    document.querySelector('.update-container').style.display = 'none';
-})
+if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+        const updateContainer = document.querySelector('.update-container');
+        if (updateContainer) updateContainer.style.display = 'none';
+    });
+}

@@ -1,99 +1,84 @@
 <?php
-include 'connection.php';
-session_start();
-$admin_id = $_SESSION['admin_name'];
-if (!isset($admin_id)) {
-    header('location:login.php');
+require_once 'connection.php';
+require_once 'includes/functions.php';
+
+if (empty($_SESSION['admin_name'])) {
+    header('Location: login.php');
+    exit;
 }
 
 if (isset($_POST['logout'])) {
+    session_unset();
     session_destroy();
-    header('location:login.php');
+    header('Location: login.php');
+    exit;
 }
 
 if (isset($_GET['delete'])) {
-    $delete_id = $_GET['delete'];
-    
-    $stmt = $conn->prepare("DELETE FROM `bookings` WHERE id = ?");
-    $stmt->bind_param("i", $delete_id);
+    $delete_id = (int) $_GET['delete'];
+    $stmt = $conn->prepare('DELETE FROM `bookings` WHERE id = ?');
+    $stmt->bind_param('i', $delete_id);
     $stmt->execute();
-    $message[] = 'Booking removed successfully';
-    header('location:admin_booking.php');
+    $stmt->close();
+    header('Location: admin_booking.php?deleted=1');
+    exit;
 }
 ?>
-<style type="text/css">
-    <?php 
-    include 'admin_style.css';
-    ?>
-    body {
-        background-color: #d6efff;
-        background-image: linear-gradient(43deg, #d6efff 0%, #1f1313 46%, #ef9c1c 100%);
-        font-family: Arial, sans-serif;
-    }
-
-    h1 {
-        color: aliceblue;
-    }
-</style>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin: Bookings | Savoy Cinema</title>
+    <link rel="icon" href="images/logo1.png">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-    
-    <title>Admin - Booking Page</title>
+    <link rel="stylesheet" type="text/css" href="admin_style.css">
 </head>
 <body>
     <?php include 'admin_header.php'; ?>
-    <?php
-    if (isset($message)) {
-        foreach ($message as $message) {
-            echo '
-                <div class="message">
-                    <span>' . $message . '</span>
-                    <i class="bx bxs-circle" onclick="this.parentElement.remove()"></i>
-                </div>
-            ';
-        }
-    }
-    ?>
+    <?php if (isset($_GET['deleted'])): ?>
+    <div class="message message--success" role="status">
+        <span>Booking removed successfully.</span>
+        <i class="bx bxs-circle" onclick="this.parentElement.remove()" role="button" tabindex="0" aria-label="Dismiss"></i>
+    </div>
+    <?php endif; ?>
+
     <div class="line4"></div>
     <section class="order-container">
         <h1 class="title">Total Bookings</h1>
         <div class="box-container">
-            <?php 
-            $select_bookings = $conn->prepare("SELECT * FROM `bookings`");
-            $select_bookings->execute();
-            $result = $select_bookings->get_result();
-            if ($result->num_rows > 0) {
-                while ($fetch_bookings = $result->fetch_assoc()) {
+            <?php
+            $result = $conn->query(
+                'SELECT b.*, m.title AS movie_title, s.show_date, s.show_time, t.hall_code
+                 FROM bookings b
+                 JOIN showtimes s ON s.id = b.showtime_id
+                 JOIN movies m ON m.id = s.movie_id
+                 JOIN theatres t ON t.id = s.theatre_id
+                 ORDER BY b.created_at DESC'
+            );
+            if ($result->num_rows > 0):
+                while ($booking = $result->fetch_assoc()):
             ?>
             <div class="box">
-                <p>Movie Title: <span><?php echo $fetch_bookings['movie_title']; ?></span></p>
-                <p>Show Time: <span><?php echo $fetch_bookings['show_time']; ?></span></p>
-                <p>Seat Type: <span><?php echo $fetch_bookings['seat_type']; ?></span></p>
-                <p>Seat Number: <span><?php echo $fetch_bookings['seat_number']; ?></span></p>
-                <p>Name: <span><?php echo $fetch_bookings['name']; ?></span></p>
-                <p>Booking Time: <span><?php echo $fetch_bookings['booking_time']; ?></span></p>
-                <form method="post">
-                    <input type="hidden" name="booking_id" value="<?php echo $fetch_bookings['id']; ?>">
-                    <a href="admin_booking.php?delete=<?php echo $fetch_bookings['id']; ?>" onclick="return confirm('Delete this booking?');">Delete</a>
-                </form>
+                <p>Movie: <span><?php echo h($booking['movie_title']); ?></span></p>
+                <p>Showtime: <span><?php echo h(friendly_date($booking['show_date'])); ?> at <?php echo h(friendly_time($booking['show_time'])); ?>, Hall <?php echo h($booking['hall_code']); ?></span></p>
+                <p>Seats: <span><?php echo h(implode(', ', json_decode($booking['seat_codes'], true) ?: [])); ?></span></p>
+                <p>Customer: <span><?php echo h($booking['customer_name']); ?> (<?php echo h($booking['customer_email']); ?>)</span></p>
+                <p>Total: <span><?php echo h(money($booking['total_price'])); ?></span></p>
+                <p>Reference: <span><?php echo h($booking['booking_reference']); ?></span></p>
+                <a href="admin_booking.php?delete=<?php echo (int) $booking['id']; ?>" onclick="return confirm('Delete this booking?');">Delete</a>
             </div>
-            <?php 
-                }
-            } else {
-                echo '
-                <div class="empty">
-                    <p>No bookings placed yet!</p>
-                </div>                             
-                ';
-            }
+            <?php
+                endwhile;
+            else:
             ?>
+            <div class="empty">
+                <p>No bookings placed yet!</p>
+            </div>
+            <?php endif; ?>
         </div>
     </section>
-    
+
     <script type="text/javascript" src="script.js"></script>
 </body>
 </html>
