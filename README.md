@@ -1,83 +1,53 @@
 # Savoy Cinema
 
-A movie theatre website for a fictional Colombo cinema: browse now showing and coming soon movies, view showtimes, and book seats from a real interactive seat map. Built as a classic server-rendered PHP site (no build step, no framework) on top of MySQL/MariaDB.
+A premium, frontend-only movie theatre website. Browse now showing and coming soon movies, check showtimes across three Colombo cinemas, and book seats with a real seat map, all running entirely in the browser.
 
-## Features
+## Stack
 
-- **Home page** with a hero slider and Now Showing / Coming Soon rails, all driven by the database.
-- **Movie catalog** (`movies.php`) with live search and genre/status filtering.
-- **Movie detail pages** with poster, backdrop, genre, runtime, rating, language, description, and upcoming showtimes grouped by date.
-- **Booking flow** (`book.php`): choose a movie, then a date and showtime, then seats on a real per-hall seat map (available / selected / occupied / premium), then your details, then a confirmation screen with a booking reference. Seat availability is checked live and re-checked on submit to avoid double-booking.
-- **Booking lookup** (`view_booking.php`): find a past booking by reference number and email.
-- **Contact form** with server-side validation and a proper success/error state (no raw dumped PHP output).
-- **Admin panel**: dashboard, movie management (add/edit/delete with poster/backdrop URLs, genre, runtime, rating, language, status), bookings, registered users, and contact messages.
-- **Accounts**: registration and login with hashed passwords, plus an admin role.
+- React 18 + TypeScript
+- Vite (build tool and dev server)
+- React Router v6 (client-side routing)
+- Tailwind CSS
+- No backend, no database, no API server. Movie, cinema, and showtime data is local and typed; bookings are simulated and saved to `localStorage`.
 
-## Tech stack
+## Getting started
 
-- PHP 8 with `mysqli` (prepared statements throughout)
-- MySQL / MariaDB
-- Bootstrap 4, jQuery, Slick and Owl Carousel (bundled locally under `css/` and `js/`)
-- Vanilla JavaScript for the booking flow and catalog filtering (`js/booking.js`, inline scripts)
-- No build tooling: everything runs directly from PHP + static assets, no npm install required
-
-## Important limitations (this is a demo)
-
-- **No payment gateway.** The booking flow simulates a real cinema booking (seat locking, pricing, a reference number) but does not process any payment.
-- **No real movie API.** Movie data lives in the local `movies` table, seeded with real, verified titles and posters, but it is a static local dataset, not a live TMDB/IMDb integration. Poster and backdrop images are hotlinked from TMDB's public image CDN (`image.tmdb.org`) for demo purposes.
-- **No CSRF protection or rate limiting** on forms. Acceptable for a local demo; add both before any real deployment.
-
-## Project structure
-
-```
-├── Database/
-│   ├── savoy_movie_theater.sql   # schema + seed data
-│   └── seed_passwords.php        # one-time script to hash demo account passwords
-├── includes/
-│   ├── functions.php             # h(), money(), date/time/seat helpers
-│   ├── header.php                # shared <head> + nav for customer-facing pages
-│   └── footer.php                # shared footer + scripts
-├── css/, js/, images/            # third-party assets + images
-├── index.php, movies.php, movie.php, cinema.php, contact.php, book.php, view_booking.php
-├── showtime_seats.php            # JSON: seat map + availability for a showtime
-├── book_seat.php                 # JSON: creates a booking (server-side seat lock)
-├── admin_*.php                   # admin panel (dashboard, movies, bookings, users, messages)
-└── login.php, register.php, logout.php
+```sh
+npm install
+npm run dev
 ```
 
-## Setup (local development)
+Open the printed local URL. To type-check, lint, and build for production:
 
-1. Install a local PHP + MySQL stack (XAMPP, WAMP, MAMP, or `php` + `mysql` directly). PHP 8.0+ is required.
-2. Copy this project into your server's document root, e.g. `htdocs/Movie-Theatre-Web-Application`.
-3. Create the database and import the schema:
-   ```sh
-   mysql -u root -e "CREATE DATABASE savoy_movie_theater"
-   mysql -u root savoy_movie_theater < Database/savoy_movie_theater.sql
-   ```
-4. Set real password hashes for the seeded demo accounts (bcrypt hashes can't be committed as plain SQL, they're generated at runtime):
-   - Visit `http://localhost/Movie-Theatre-Web-Application/Database/seed_passwords.php` once in your browser (or run it with the PHP CLI).
-   - Delete `Database/seed_passwords.php` afterwards, it should never be reachable on a real server.
-5. Visit `http://localhost/Movie-Theatre-Web-Application/index.php`.
+```sh
+npm run typecheck
+npm run lint
+npm run build
+npm run preview   # serve the production build locally
+```
 
-If your MySQL root user has a password, or you're not using `localhost`, update the credentials in `connection.php`.
+The production build outputs to `dist/`.
 
-### Demo accounts
+## Deploying
 
-After running `seed_passwords.php`:
+This is a static single-page app. Deploy the `dist/` folder to any static host.
 
-| Role  | Email               | Password    |
-|-------|---------------------|-------------|
-| Admin | hashan@gmail.com    | hashan123   |
-| User  | janith@gmail.com    | janith123   |
-| User  | roshan@gmail.com    | roshan123   |
-| User  | kasun@gmail.com     | kasun123    |
+- **Netlify**: connect the repo, build command `npm run build`, publish directory `dist`. `public/_redirects` (copied into `dist/_redirects` at build time) handles the SPA fallback so deep links like `/movies` or `/movie/tron-ares` don't 404 on refresh.
+- **Vercel**: connect the repo, framework preset "Vite" (build command `npm run build`, output directory `dist`). `vercel.json` at the repo root rewrites all routes to `index.html` for the same reason.
 
-## Deployment notes
+No environment variables are required for either platform.
 
-This is a plain PHP application: deploy it to any host that serves PHP 8+ with a MySQL-compatible database (shared hosting, a VPS with PHP-FPM + nginx/Apache, etc.). There is no build step. Before deploying publicly:
+## How the data works
 
-- Set real database credentials via environment variables instead of the hardcoded values in `connection.php`.
-- Turn off `display_errors` in `php.ini` (the app already returns a friendly error page for uncaught exceptions).
-- Delete `Database/seed_passwords.php`.
-- Add CSRF tokens to the booking, contact, login, and register forms.
-- Serve the site over HTTPS and set the session cookie to `Secure`/`HttpOnly`.
+- `src/data/movies.ts`: a fixed set of real, currently relevant movies with posters and backdrops hotlinked from TMDB's public image CDN, used for demo purposes.
+- `src/data/cinemas.ts`: three fictional Savoy Cinema locations, each with two halls.
+- `src/data/showtimes.ts`: showtimes are generated at load time for the next 5 days relative to the visitor's actual system clock, so the schedule never looks stale.
+- `src/lib/seats.ts`: builds each hall's seat grid and deterministically simulates a realistic set of already-occupied seats per showtime (seeded by the showtime id, so it's stable across reloads without needing a server).
+- `src/lib/bookings.ts`: booking confirmations are saved to `localStorage` on the device that made them. There is no shared backend, so a booking made on one device or browser will not be visible from another.
+
+## Limitations (by design)
+
+- No real payment processing, this is a simulated checkout.
+- No real account system. "My Bookings" looks up bookings stored in the current browser's `localStorage` by reference number and email.
+- Seat occupancy is simulated for realism, not tracked against real inventory.
+- Trailer links open a YouTube search for the movie's official trailer rather than a specific embedded video, to avoid linking to a video ID that could be wrong, removed, or region-locked.

@@ -1,7 +1,0 @@
-See README.md for full setup instructions.
-
-Admin login: hashan@gmail.com / hashan123
-Database name: savoy_movie_theater
-
-Note: after importing Database/savoy_movie_theater.sql, you must run
-Database/seed_passwords.php once before any account can log in (see README.md).
